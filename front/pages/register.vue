@@ -83,6 +83,25 @@ import md5 from 'md5';
     export default {
         layout:'login',
         data() {
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                callback(new Error('请输入密码'));
+                } else {
+                if (this.form.repassword !== '') {
+                    this.$refs.form.validateField('repassword');
+                }
+                callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                callback(new Error('请再次输入密码'));
+                } else if (value !== this.form.password) {
+                callback(new Error('两次输入密码不一致!'));
+                } else {
+                callback();
+                }
+            };
             return {
                 form: {
                     email:"316783812@qq.com",
@@ -97,10 +116,10 @@ import md5 from 'md5';
                         {type:"email", message:'请输入正确的邮箱格式'}
                     ],
                     password:[
-                        {required:true, message:'请输入密码'},
+                        { validator: validatePass, trigger: 'blur' }
                     ],
                     repassword:[
-                        {required:true, message:'请重新输入密码'},
+                        { validator: validatePass2, trigger: 'blur' }
                     ],
                     nickname:[
                         {required:true, message:'请您的昵称'},
@@ -174,6 +193,7 @@ import md5 from 'md5';
       width:90px;
       height:50px;
       padding: 0;
+      vertical-align: top;
     }
     img{
       width:90px;

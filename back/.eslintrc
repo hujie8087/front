@@ -1,3 +1,12 @@
 {
-  "extends": "eslint-config-egg"
+  "extends": "eslint-config-egg",
+  "env": {  
+    "browser": true,  
+    "node": true,  
+    "commonjs": true  
+  },  
+  "rules": {
+    "indent": [2, 4],
+    "eol-last": 0 
+  }
 }
