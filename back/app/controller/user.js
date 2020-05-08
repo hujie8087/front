@@ -1,19 +1,19 @@
 'use strict';
 
-const Controller = require('./base');
+const BaseController = require('./base');
 const md5 = require('md5');
 
 const hashCode = '45648123@!';
 
-class UserController extends Controller {
+class UserController extends BaseController {
     async info() {
-        // this.success({
-        //     name: 'kkb',
-        // });
         const { ctx } = this;
         const { email } = ctx.state;
         const user = await this.CheckEmail(email);
-        return this.success(user);
+        this.success(user);
+        // this.success({
+        //   name:'kkb'
+        // })
     }
     async captcha() {
         const { ctx } = this;
@@ -43,13 +43,13 @@ class UserController extends Controller {
                 email,
                 password: md5(password + hashCode),
             });
-            // console.log(user);
+            console.log(user);
             if (user) {
                 const { nickname } = user;
                 const token = app.jwt.sign({ // 缓存用户信息
                     nickname,
                     email,
-                    _id: user.__id,
+                    _id: user._id,
                 }, app.config.jwt.secret, { // 利用jwt加密token
                     expiresIn: '1h', // 设置过期时间
                 });
@@ -60,6 +60,35 @@ class UserController extends Controller {
             }
         } else {
             this.error('验证码错误');
+        }
+    }
+    async isFollow() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const isFollow = !!me.following.find(v => v.toString() === ctx.params.id);
+        this.success({ isFollow });
+    }
+    async follow() {
+        // 把关注的用户id 放在following字段李
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const isFollow = !!me.following.find(v => v.toString() === ctx.params.id);
+        if (!isFollow) {
+            me.following.push(ctx.params.id);
+            me.save();
+            this.message('关注成功');
+        }
+    }
+
+    async unfollow() {
+        // 取消关注
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const index = me.following.map(id => id.toString()).indexOf(ctx.params.id);
+        if (index > -1) {
+            me.following.splice(index, 1);
+            me.save();
+            this.message('取消成功');
         }
     }
     async create() {

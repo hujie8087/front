@@ -86,13 +86,12 @@ import md5 from 'md5';
                 this.code.captcha = '/api/user/captcha?_t'+ new Date().getTime()
             },
             async submitForm() {
-                let res = await this.$http.post('/user/login', {  //发送登录信息到后端
+                let res = await this.$store.dispatch('user/login', {  //发送登录信息到后端
                     email:this.form.email,
                     password:md5(this.form.password),
                     captcha:this.form.captcha
                 })
                 if (res.code === 1) {
-                    localStorage.setItem('token',res.data.token);
                     this.$message({
                         showClose: true,
                         message: '恭喜你,登录成功',
@@ -101,7 +100,8 @@ import md5 from 'md5';
                     setTimeout(() => {
                         this.$router.push({'path':'/'})
                     }, 1000);
-                    console.log('登录',res)
+                    // localStorage.setItem('token',res.data.token);
+                    // console.log('登录',res)
                 }
             }
         },

@@ -15,4 +15,15 @@ module.exports = app => {
     router.post('/user/register', controller.user.create); // 获取注册信息
 
     router.post('/user/login', controller.user.login); // 获取登录信息
+
+    router.get('/user/isfollow/:id', jwt, controller.user.isFollow);
+
+    router.put('/user/follow/:id', jwt, controller.user.follow);
+    router.delete('/user/follow/:id', jwt, controller.user.unfollow);
+
+    router.group({ name: 'article', prefix: '/article' }, router => { // 创建文章
+        const { create, detail } = controller.article;
+        router.post('/create', jwt, create);
+        router.get('/:id', detail);
+    });
 };

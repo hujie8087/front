@@ -15,9 +15,9 @@ export default ({ store, redirect }) => {
     // 添加请求拦截器
     service.interceptors.request.use(function(config) {
         // 在发送请求之前做些什么
-        const token = window.localStorage.getItem('token');
+        const token = window.localStorage.getItem('token')
         if (token) {
-            config.headers.common['Authorization'] = 'Bearr ' + token //设置token到请求头里面，方便中间件获取token信息
+            config.headers.common['Authorization'] = 'Bearer ' + token //设置token到请求头里面，方便中间件获取token信息
         }
         return config;
     }, function(error) {

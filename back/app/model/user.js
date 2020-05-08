@@ -12,6 +12,9 @@ module.exports = app => {
         nickname: { type: String, required: true },
         avatar: { type: String, required: false, default: '/user.png' },
         __v: { type: Number, required: true, select: false },
+        following: {
+            type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        },
     }, { timestamps: true });
     return mongoose.model('User', UserSchema);
 };

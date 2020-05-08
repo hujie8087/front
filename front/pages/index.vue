@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <div>
       <logo />
-    </div>
   </div>
 </template>
 
@@ -10,13 +8,6 @@
 import Logo from '~/components/Logo.vue'
 
 export default {
-  async mounted () {
-    const token = localStorage.getItem('token');
-    if (token) {
-      let ret = await this.$http.get('/user/info');
-      console.log(token,ret)
-    }
-  },
   components: {
     Logo
   }

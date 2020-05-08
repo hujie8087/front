@@ -26,7 +26,7 @@ module.exports = appInfo => {
     return {
         ...config,
         ...userConfig,
-        security: {
+        security: { // 解决本地网络攻击
             csrf: {
                 enable: false,
             },
