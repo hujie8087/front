@@ -43,7 +43,7 @@ class UserController extends BaseController {
                 email,
                 password: md5(password + hashCode),
             });
-            console.log(user);
+            // console.log(user);
             if (user) {
                 const { nickname } = user;
                 const token = app.jwt.sign({ // 缓存用户信息
@@ -64,7 +64,7 @@ class UserController extends BaseController {
     }
     async isFollow() {
         const { ctx } = this;
-        const me = await ctx.model.User.findById(ctx.state.userid);
+        const me = await ctx.model.User.findById(ctx.state.userid); // 找到当前的用户的信息
         const isFollow = !!me.following.find(v => v.toString() === ctx.params.id);
         this.success({ isFollow });
     }

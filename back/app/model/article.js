@@ -15,7 +15,7 @@ module.exports = app => {
         // 一对多，每个文章都有作者,只存储用户的id
         author: {
             type: Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'User', // 指向User
             required: true,
         },
         views: { type: Number, required: false, default: 1 },

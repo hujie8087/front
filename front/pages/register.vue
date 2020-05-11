@@ -165,7 +165,7 @@ import md5 from 'md5';
                                 message: '恭喜你,注册成功',
                                 type: 'success'
                                 });
-                                // this.$nuxt.$router.redirect('/')
+                                this.$nuxt.$router.redirect('/')
                             }
                             console.log(ret)
                         }

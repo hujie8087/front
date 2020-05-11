@@ -5,7 +5,7 @@ class ArticleController extends Controller {
     async detail() {
         const { ctx } = this;
         const { id } = ctx.params;
-        const info = await ctx.model.Article.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('author');
+        const info = await ctx.model.Article.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('author'); // findOneAndUpdate找到数据并更新数据 $inc每次访问对应数据+1
         this.success(info);
     }
     async create() {

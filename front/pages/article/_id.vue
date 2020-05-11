@@ -53,7 +53,8 @@ export default {
     },
     async checkFollowStatus(){
       let isFollow = await this.$http.get('/user/isfollow/'+this.article.author._id)
-      if(isFollow.code==0){
+      console.log(isFollow)
+      if(isFollow.code==1){
         this.isFollow = isFollow.data.isFollow
       }
     }

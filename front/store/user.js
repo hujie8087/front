@@ -23,7 +23,6 @@ const mutations = {
 }
 const actions = {
     // dispatch('user/login触发的')
-
     login: async({ state, commit }, data) => {
         let ret = await http.post('/user/login', data)
         localStorage.setItem('token', ret.data.token)
@@ -32,7 +31,6 @@ const actions = {
     },
     detail: async({ state, commit }, data) => {
         let ret = await http.get('/user/info')
-        console.log(ret)
         if (ret.code == 1) {
             commit('SET_USER', ret.data)
             return ret

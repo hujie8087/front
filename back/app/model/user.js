@@ -10,11 +10,12 @@ module.exports = app => {
         email: { type: String, required: true },
         password: { type: String, required: true, select: false }, // select 在请求中隐藏，不显示出来
         nickname: { type: String, required: true },
-        avatar: { type: String, required: false, default: '/user.png' },
-        __v: { type: Number, required: true, select: false },
+        avatar: { type: String, required: true, default: '/user.png' },
+        __v: { type: Number, required: false, select: false },
         following: {
             type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         },
+        // 关注的用户
     }, { timestamps: true });
     return mongoose.model('User', UserSchema);
 };
