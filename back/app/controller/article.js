@@ -2,6 +2,11 @@
 const Controller = require('./base');
 const marked = require('marked');
 class ArticleController extends Controller {
+    async list() {
+        const { ctx } = this;
+        const list = await ctx.model.Article.find().populate('author');
+        this.success(list);
+    }
     async detail() {
         const { ctx } = this;
         const { id } = ctx.params;

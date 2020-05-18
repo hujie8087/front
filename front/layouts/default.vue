@@ -9,6 +9,9 @@
           <el-menu-item index="2">
             <nuxt-link to="/">首页</nuxt-link>
           </el-menu-item>
+          <el-menu-item v-if="userinfo._id" index="7" class="pull-right">
+            <div class="loginout" @click="loginOut">退出</div>
+          </el-menu-item>
           <el-menu-item v-if="userinfo._id" index="4" class="pull-right">
             <nuxt-link :to="'/user/' + userinfo._id">{{userinfo.nickname}}</nuxt-link>
           </el-menu-item>
@@ -46,8 +49,32 @@ export default {
     const token = localStorage.getItem('token');
     if (token) {
       this.$store.dispatch('user/detail')
-      // let ret = await this.$http.get('/user/info');
-      // console.log(token,ret)
+      console.log(token)
+    }
+  },
+  methods: {
+    loginOut() {
+      this.$confirm('是否退出登录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          localStorage.removeItem('token');
+          this.$store.commit('SET_USER', '');
+          this.$store.commit('SET_TOKEN', '');
+          this.$message({
+            type: 'success',
+            message: '退出成功！'
+          });
+          setTimeout(() => {
+            location.reload()
+          }, 1000);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });          
+        });
     }
   },
   computed:{

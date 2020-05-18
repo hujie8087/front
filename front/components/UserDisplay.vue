@@ -2,7 +2,7 @@
 <div class="user">
   <!-- 显示用户名字，头像，并且点击到详情页 -->
   <nuxt-link :to="url">
-    <!-- <img class="user-avatar" :src="user.avatar" alt=""> -->
+    <img class="user-avatar" :src="user.avatar" alt="">
     {{user.nickname}}
   </nuxt-link>
   <slot>

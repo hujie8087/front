@@ -1,16 +1,31 @@
 <template>
   <div class="container">
-      <logo />
+    <ArticleItem 
+      v-for="article in articles" 
+      :key="article._id" 
+      :article="article"
+      ></ArticleItem>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
+import ArticleItem from '@/components/ArticleItem.vue';
 export default {
-  components: {
-    Logo
-  }
+  components:{
+    ArticleItem
+  },
+  data() {
+    return {
+      articles:[]
+    }
+  },
+  async mounted () {
+    let ret = await this.$http.get('article')
+    if (ret.code === 1) {
+      this.articles = ret.data;
+      console.log(this.articles);
+    }
+  },
 }
 </script>
 
@@ -18,10 +33,6 @@ export default {
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 .title {

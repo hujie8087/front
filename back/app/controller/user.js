@@ -118,6 +118,11 @@ class UserController extends BaseController {
             this.error('验证码错误');
         }
     }
+    async following() {
+        const { ctx } = this;
+        const user = await ctx.model.User.findById(ctx.params.id).populate('following');
+        this.success(user.following);
+    }
 }
 
 module.exports = UserController;

@@ -19,7 +19,7 @@
 import debounce from 'lodash/debounce'
 import marked from 'marked' //设置markedown文本格式
     export default {
-        // layout: "login",
+        // layout:"login",
         data() {
             return {
                 content: `# 开课吧最帅
