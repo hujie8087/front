@@ -11,7 +11,7 @@
                 <i class="el-icon-view">{{article.views}}</i>
             </span>
             <span class="likes">
-                <i class="el-icon-thumb">{{article.like}}</i>
+                <i class="el-icon-thumb">{{article.likes}}</i>
             </span>
         </p>
     </div>

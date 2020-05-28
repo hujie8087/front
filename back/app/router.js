@@ -9,7 +9,11 @@ module.exports = app => {
     router.get('/', controller.home.index);
     // 下面的链接先走完中间件的认证逻辑，再走到后面的过程
     router.group({ name: 'user', prefix: '/user' }, router => { // 创建文章
-        const { info, captcha, create, login, isFollow, follow, unfollow, following, followers } = controller.user;
+        const { info, captcha, create, login,
+            isFollow, follow, unfollow,
+            following, followers,
+            articleState, likeArticle, cancelLikeArticle,
+            disLikeArticle, cancelDisLikeArticle } = controller.user;
 
         router.get('/info', jwt, info); // 测试接口用
 
@@ -28,6 +32,16 @@ module.exports = app => {
         router.get('/:id/following', following);
 
         router.get('/:id/followers', followers);
+
+        router.get('/article/:id', jwt, articleState);
+
+        router.put('/article/:id', jwt, likeArticle);
+
+        router.delete('/article/:id', jwt, cancelLikeArticle);
+
+        router.put('/disArticle/:id', jwt, disLikeArticle);
+
+        router.delete('/disArticle/:id', jwt, cancelDisLikeArticle);
     });
 
     router.group({ name: 'article', prefix: '/article' }, router => { // 创建文章

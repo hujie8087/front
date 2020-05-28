@@ -19,6 +19,8 @@ module.exports = app => {
             required: true,
         },
         views: { type: Number, required: false, default: 1 },
+        likes: { type: Number, required: false, default: 0 },
+        disLikes: { type: Number, required: false, default: 0 },
     });
     return mongoose.model('Article', ArticleSchema);
 };

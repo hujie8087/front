@@ -128,6 +128,61 @@ class UserController extends BaseController {
         const users = await ctx.model.User.find({ following: ctx.params.id }); // 过滤following字段中有用户ID的数据
         this.success(users);
     }
+    async articleState() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const like = !!me.likeArticle.find(id => id.toString() === ctx.params.id);
+        const disLike = !!me.disLikeArticle.find(id => id.toString() === ctx.params.id);
+        this.success({ like, disLike });
+    }
+    async likeArticle() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const isLike = !!me.likeArticle.find(v => v.toString() === ctx.params.id);
+        // const isDisLike = !!me.disLikeArticle.find(v => v.toString() === ctx.params.id);
+        if (!isLike) {
+            me.likeArticle.push(ctx.params.id);
+            me.save();
+            await ctx.model.Article.findByIdAndUpdate(ctx.params.id, { $inc: { likes: 1 } });
+            this.success('点赞成功');
+        }
+    }
+    async cancelLikeArticle() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const index = me.likeArticle.map(id => id.toString()).indexOf(ctx.params.id);
+        if (index > -1) {
+            me.likeArticle.splice(index, 1);
+            me.save();
+            await ctx.model.Article.findByIdAndUpdate(ctx.params.id, { $inc: { likes: -1 } });
+            this.success('取消点赞成功');
+        }
+    }
+    async disLikeArticle() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        // const isLike = !!me.likeArticle.find(v => v.toString() === ctx.params.id);
+        const isDisLike = !!me.disLikeArticle.find(v => v.toString() === ctx.params.id);
+        // const index = me.likeArticle.map(id => id.toString()).indexOf(ctx.params.id);
+        if (!isDisLike) {
+            me.disLikeArticle.push(ctx.params.id);
+            me.save();
+            await ctx.model.Article.findByIdAndUpdate(ctx.params.id, { $inc: { disLikes: 1 } });
+            this.success('踩成功');
+        }
+    }
+    async cancelDisLikeArticle() {
+        const { ctx } = this;
+        const me = await ctx.model.User.findById(ctx.state.userid);
+        const index = me.disLikeArticle.map(id => id.toString()).indexOf(ctx.params.id);
+        if (index > -1) {
+            me.disLikeArticle.splice(index, 1);
+            me.save();
+            await ctx.model.Article.findByIdAndUpdate(ctx.params.id, { $inc: { disLikes: -1 } });
+            this.success('取消踩成功');
+        }
+    }
+
 }
 
 module.exports = UserController;

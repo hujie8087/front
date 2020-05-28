@@ -15,6 +15,12 @@ module.exports = app => {
         following: {
             type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
         },
+        likeArticle: {
+            type: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
+        },
+        disLikeArticle: {
+            type: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
+        },
         // 关注的用户
     }, { timestamps: true });
     return mongoose.model('User', UserSchema);
