@@ -13,6 +13,11 @@ class ArticleController extends Controller {
         const info = await ctx.model.Article.findOneAndUpdate({ _id: id }, { $inc: { views: 1 } }).populate('author'); // findOneAndUpdate找到数据并更新数据 $inc每次访问对应数据+1
         this.success(info);
     }
+    async articles() {
+        const { ctx } = this;
+        const list = await ctx.model.Article.find({ author: ctx.params.id }).populate('author');
+        this.success(list);
+    }
     async create() {
         const { ctx } = this;
         const { userid } = ctx.state;

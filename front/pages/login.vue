@@ -91,6 +91,13 @@ import md5 from 'md5';
                     password:md5(this.form.password),
                     captcha:this.form.captcha
                 })
+                if (res.code === -1) {
+                    this.$message({
+                        showClose: true,
+                        message: res.message,
+                        type: 'error'
+                    });
+                }
                 if (res.code === 1) {
                     this.$message({
                         showClose: true,

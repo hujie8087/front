@@ -123,6 +123,11 @@ class UserController extends BaseController {
         const user = await ctx.model.User.findById(ctx.params.id).populate('following');
         this.success(user.following);
     }
+    async followers() {
+        const { ctx } = this;
+        const users = await ctx.model.User.find({ following: ctx.params.id }); // 过滤following字段中有用户ID的数据
+        this.success(users);
+    }
 }
 
 module.exports = UserController;

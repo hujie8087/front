@@ -23,7 +23,6 @@ export default {
         title:"",
         views:0,
         author:{
-
         }
       }
     }

@@ -2,10 +2,22 @@
     <div>
         <h2>用户中心</h2>
         <el-tabs v-model="activeName">
-            <el-tab-pane :label='"关注"+fllowing.length' name="following" >
-                <nuxt-link v-for="user in fllowing" :key="user._id" :to="'/user/'+user._id">
+            <el-tab-pane :label='"关注"+following.length' name="following" >
+                <nuxt-link v-for="user in following" :key="user._id" :to="'/user/'+user._id">
                     <UserDisplay :user="user"></UserDisplay>
                 </nuxt-link>
+            </el-tab-pane>
+            <el-tab-pane :label='"粉丝"+followers.length' name="followers" >
+                <nuxt-link v-for="user in followers" :key="user._id" :to="'/user/'+user._id">
+                    <UserDisplay :user="user"></UserDisplay>
+                </nuxt-link>
+            </el-tab-pane>
+            <el-tab-pane :label='"我的文章"+articles.length' name="articles" >
+                <ArticleItem 
+                v-for="article in articles" 
+                :key="article._id" 
+                :article="article"
+                ></ArticleItem>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -13,14 +25,18 @@
 
 <script>
 import UserDisplay from '~/components/UserDisplay.vue'
+import ArticleItem from '@/components/ArticleItem.vue'
     export default {
         components:{
-            UserDisplay
+            UserDisplay,
+            ArticleItem
         },
         data() {
             return {
-                fllowing:'',
-                activeName:'following'
+                activeName:'following',
+                following:[],
+                followers:[],
+                articles:[]
             }
         },
         mounted () {
@@ -28,26 +44,34 @@ import UserDisplay from '~/components/UserDisplay.vue'
             this.userid = userid;
             if (userid) {
                 // 关注的人
-                this.loadFllowing();
+                this.loadFollowing();
                 // 粉丝（被关注）
-                this.loadFllower();
+                this.loadFollowers();
                 // 文章
                 this.loadArticle();
             }
         },
         methods: {
-            async loadFllowing() {
+            async loadFollowing() {
                 let ret = await this.$http.get(`/user/${this.userid}/following`);
                 if (ret.code === 1) {
-                    this.fllowing = ret.data
+                    this.following = ret.data
                     console.log(ret);
                 }
             },
-            loadFllower(){
-
+            async loadFollowers(){
+                let ret = await this.$http.get(`/user/${this.userid}/followers`);
+                if (ret.code === 1) {
+                    this.followers = ret.data
+                    console.log(ret);
+                }
             },
-            loadArticle(){
-                
+            async loadArticle(){
+                let ret = await this.$http.get(`/article/${this.userid}/articles`);
+                if (ret.code === 1) {
+                    this.articles = ret.data
+                    console.log(ret);
+                }
             }
             
         },
